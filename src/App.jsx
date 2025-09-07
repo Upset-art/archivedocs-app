@@ -1,34 +1,62 @@
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Sidebar from './components/layout/Sidebar'
+import Dashboard from './components/pages/Dashboard'
+import Documents from './components/pages/Documents'
+import Categories from './components/pages/Categories'
+import { useTheme } from './hooks/useTheme'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const { isDark, toggleTheme } = useTheme()
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
+        {/* Mobile Header */}
+        <header className="md:hidden bg-blue-900 dark:bg-gray-900 text-white p-4 flex items-center justify-between">
+          <button 
+            onClick={() => setSidebarOpen(true)}
+            className="p-2"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+          <h1 className="text-lg font-bold">ArchiveDocs</h1>
+          <button onClick={toggleTheme} className="p-2">
+            {isDark ? (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+              </svg>
+            )}
+          </button>
+        </header>
+
+        <Sidebar 
+          open={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+          onThemeToggle={toggleTheme}
+          isDark={isDark}
+        />
+
+        <main className="md:ml-64 min-h-screen pt-16 md:pt-0">
+          <Routes>
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/documents" element={<Documents />} />
+            <Route path="/categories" element={<Categories />} />
+            <Route path="/users" element={<div className="p-6">Page Utilisateurs</div>} />
+            <Route path="/statistics" element={<div className="p-6">Page Statistiques</div>} />
+            <Route path="/settings" element={<div className="p-6">Page Paramètres</div>} />
+          </Routes>
+        </main>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </Router>
   )
 }
 
