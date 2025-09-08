@@ -4,10 +4,13 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 5173,
     host: '0.0.0.0',
+    port: 5173,
+    strictPort: true,
     hmr: {
-      port: 5173
+      protocol: 'wss',   // important : utilise WebSocket sécurisé
+      host: 'app.github.dev', // domaine proxy de Codespaces
+      clientPort: 443     // force le WS à passer par HTTPS
     }
   }
 })
