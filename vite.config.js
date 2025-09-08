@@ -7,10 +7,8 @@ export default defineConfig({
     port: 5173,
     host: '0.0.0.0',
     hmr: {
-      port: 5173
-    },
-    // Forcer HTTP/1.1
-    https: false,
-    http2: false
+      clientPort: 443,
+      host: 'reimagined-tribble-x5qpr5r5jgw639xv-5173.app.github.dev'
+    }
   }
 })
