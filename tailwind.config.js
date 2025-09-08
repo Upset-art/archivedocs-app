@@ -9,3 +9,4 @@ export default {
   },
   plugins: [],
 }
+  darkMode: 'class' // active le mode sombre basé sur une classe 'dark'

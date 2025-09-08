@@ -1,6 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
+const codespace = process.env.CODESPACE_NAME
+  ? `${process.env.CODESPACE_NAME}-5173.app.github.dev`
+  : 'localhost'
+
 export default defineConfig({
   plugins: [react()],
   server: {
@@ -8,9 +12,9 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     hmr: {
-      protocol: 'wss',   // important : utilise WebSocket sécurisé
-      host: 'app.github.dev', // domaine proxy de Codespaces
-      clientPort: 443     // force le WS à passer par HTTPS
-    }
-  }
+      protocol: 'wss',
+      host: codespace,
+      clientPort: 443,
+    },
+  },
 })
